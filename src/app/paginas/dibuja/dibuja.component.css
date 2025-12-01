@@ -1,0 +1,54 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.sidebar {
+  width: 100px;
+  background-color: #f8a8d3;
+  border-right: 1px dashed #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.tool-icon {
+  width: 40px;
+  height: 40px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.canvas-area {
+  background: repeating-linear-gradient(
+    0deg,
+    #ffffff,
+    #ffffff 19px,
+    #ddd 20px
+  );
+  background-size: 20px 20px;
+  flex-grow: 1;
+  display: flex;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+}
+
+.sidebar input[type="color"],
+.sidebar input[type="range"] {
+  width: 60%;
+  margin-bottom: 10px;
+  cursor: pointer;
+}

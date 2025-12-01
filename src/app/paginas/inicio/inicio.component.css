@@ -1,0 +1,126 @@
+body {
+    background-image: url;
+    background-size: cover;
+    /* Ajusta la imagen para cubrir todo */
+    background-repeat: no-repeat;
+    /* No se repite */
+    background-position: center;
+    /* Centrada */
+}
+
+h1,
+p {
+    color: white;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+}
+
+.cuadri {
+    margin: 85px;
+}
+
+.carousel-item {
+    padding: 50px;
+}
+
+.collage {
+    height: 100%;
+}
+
+.carousel-caption {
+    margin: 5%;
+}
+
+
+.boton {
+    color: rgb(214, 125, 255);
+    text-shadow:
+        -2px -2px 0 black,
+        2px -2px 0 black,
+        -2px 2px 0 black,
+        2px 2px 0 black;
+}
+
+.boton {
+    background: #cf379c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+}
+
+.boton:hover {
+    background: #ff4fa1;
+}
+
+
+
+.slider-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #ff8ecc;
+  padding: 20px;
+}
+
+.card-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding: 10px;
+  scrollbar-width: none;
+}
+
+.card-track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: 240px;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+}
+
+.card h2 {
+  margin: 0;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 6px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nav.prev { left: 0; }
+.nav.next { right: 0; }
+
+
+.card-track:active {
+  cursor: grabbing;
+}
+.card-track {
+  cursor: grab;
+}
+

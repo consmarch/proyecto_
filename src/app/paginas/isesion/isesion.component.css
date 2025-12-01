@@ -1,0 +1,102 @@
+
+
+.container {
+  display: flex;
+  height: calc(100vh - var(--navbar-height));
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* Columna izquierda */
+.left {
+  flex: 1;
+  background-color: #f6b0ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  position: relative;
+  width: 120%;
+  
+}
+
+.left img {
+  width: 200%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 500;
+}
+
+/* Columna derecha */
+.right {
+  flex: 1;
+  background-color: #f9f9fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  padding: 0;
+}
+
+/* Formulario */
+.login-form {
+  width: 100%;
+  max-width: 350px;
+  background-color: white;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.login-form label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #c25ab4;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #a84ca0;
+}
+
+.login-form a {
+  display: block;
+  margin-top: 15px;
+  color: #a84ca0;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}

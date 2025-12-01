@@ -1,0 +1,82 @@
+<div class="fotopro"> <img src="img/arpro.png" alt="" aria-hidden="true" class="bd-placeholder-img" height="100%"
+    preserveAspectRatio="xMidYMid slice" width="100%">
+  <div class="container">
+    <div class="carousel-caption">
+      <h1 class="texto">Los Productos de Dulce Muna</h1>
+      <p class="texto">Personaliza todo con el nombre y diseño que mas te guste</p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ===== Slider de tipos ===== -->
+<div class="slider-container">
+  <button class="nav prev" (click)="scrollLeft()">&#8249;</button>
+  <div class="card-track" #track>
+    <div *ngFor="let tipo of tipos" class="card2">
+      <img [src]="tipo.img" alt="{{tipo.nombre}}">
+      <h2>{{tipo.nombre}}</h2>
+    </div>
+  </div>
+  <button class="nav next" (click)="scrollRight()">&#8250;</button>
+</div>
+
+<!-- ===== Filtro ===== -->
+<div class="filtro">
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <label>Categoria</label>
+      <select class="form-select" [(ngModel)]="selectedCategory" name="categoria">
+        <option value="">Todas</option>
+        <option *ngFor="let categoria of categoria" [value]="categoria">{{ categoria }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label>Tipo</label>
+      <select class="form-select" [(ngModel)]="selectedBrand" name="nombre">
+        <option value="">Todas</option>
+        <option *ngFor="let nombre of nombre" [value]="nombre">{{ nombre }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label>Precio min</label>
+      <input type="number" class="form-control" [(ngModel)]="minPrecio" name="minPrecio">
+    </div>
+
+    <div class="col-md-2">
+      <label>Precio max</label>
+      <input type="number" class="form-control" [(ngModel)]="maxPrecio" name="maxPrecio">
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+      <button type="button" class="btn btn-outline-danger" (click)="resetFilters()">
+        <div class="button-top">Limpiar</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Productos filtrados ===== -->
+<div class="card-container">
+  <ng-container *ngIf="filteredProducts && filteredProducts.length">
+    <ng-container *ngFor="let producto of filteredProducts">
+      <div *ngIf="producto.disponibilidad" class="card">
+        <img [src]="producto.img" alt="{{ producto.img }}" class="product-image">
+        <h2>{{ producto.nombre }}</h2>
+        <p>Precio: {{ producto.precio }}</p>
+        <p *ngIf="producto.cantidad">Cantidad: {{ producto.cantidad }}</p>
+        <p>Categoria: {{ producto.categoria }}</p>
+        <button type="button" class="btn btn-outline-primary" (click)="agregar(producto)">
+          Agregar al carrito
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <div *ngIf="filteredProducts.length == 0" class="text-muted">
+    No se encontraron productos que coincidan con los filtros
+  </div>
+</div>

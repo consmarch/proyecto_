@@ -1,0 +1,81 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <!-- Logo -->
+    <a class="navbar-brand" routerLink="">
+      <img src="img/logoe.png" alt="">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/inicio">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/productos">Productos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Más</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/dibuja">Diseña</a></li>
+            <li><a class="dropdown-item" routerLink="/carrito">Carrito</a></li>
+            <li><a class="dropdown-item" routerLink="/contacto">Contacto</a></li>
+            <li><a class="dropdown-item" routerLink="/quienessomos">Quiénes Somos</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Formulario de búsqueda -->
+      <form class="search-form" role="search" (ngSubmit)="buscar()">
+        <input type="search" placeholder="Buscar..." aria-label="Buscar" [(ngModel)]="terminoBusqueda" name="busqueda" />
+        <button type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+      <!-- Usuario / login -->
+      <li class="nav-item dropdown user-dropdown">
+        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
+          <img src="img/user.png" alt="">
+        </a>
+
+        <ul class="dropdown-menu">
+          <li *ngIf="!isLogged">
+            <a class="dropdown-item" routerLink="/isesion">Ingresar</a>
+          </li>
+
+          <li *ngIf="!isLogged">
+            <a class="dropdown-item" routerLink="/registrar">Registrarse</a>
+          </li>
+
+          <li *ngIf="isLogged">
+            <a class="dropdown-item" (click)="logout()" routerLink="/">Cerrar sesión</a>
+          </li>
+
+          <li *ngIf="isAdmin">
+            <a class="dropdown-item" routerLink="/admin">Admin</a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Carrito -->
+      <div class="d-flex align-items-center ms-3">
+        <a class="navbar-bran d position-relative" routerLink="/carrito">
+          <img src="img/carrito.png" alt="" class="carrito-img">
+          <span *ngIf="cantidadProductos > 0"
+            class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+            {{cantidadProductos}}
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />

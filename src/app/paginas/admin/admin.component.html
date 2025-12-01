@@ -1,0 +1,89 @@
+<div class="admin-container">
+
+  <h2 class="titulo">Panel de Administración</h2>
+
+  <!-- FORMULARIO -->
+  <form [formGroup]="formulario" (ngSubmit)="guardar()" class="form-card">
+
+    <div class="fila">
+      <div class="campo">
+        <label>Nombre</label>
+        <input formControlName="nombre" class="input" />
+      </div>
+
+      <div class="campo">
+        <label>Precio</label>
+        <input formControlName="precio" type="number" class="input" />
+      </div>
+
+      <div class="campo">
+        <label>Stock</label>
+        <input formControlName="stock" type="number" class="input" />
+      </div>
+    </div>
+
+    <div class="campo">
+      <label>Descripción</label>
+      <textarea formControlName="descripcion" rows="3" class="input"></textarea>
+    </div>
+
+    <div class="campo">
+      <label>Imagen</label>
+      <input type="file" (change)="onFileChange($event)" class="input" />
+    </div>
+
+    <div class="preview" *ngIf="imagenPrevia">
+      <img [src]="imagenPrevia" />
+    </div>
+
+    <div class="acciones">
+      <button class="btn guardar" type="submit">
+        {{ editando ? 'Actualizar' : 'Crear' }} Producto
+      </button>
+
+      <button class="btn limpiar" type="button" (click)="reset()">
+        Limpiar
+      </button>
+    </div>
+  </form>
+
+  <!-- LISTA DE PRODUCTOS -->
+  <h3 class="subtitulo">Productos existentes</h3>
+
+  <div class="tabla-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of productos">
+          <td>{{ p.id }}</td>
+
+          <td>
+            <img *ngIf="p.imagen"
+                 [src]="'http://localhost/api_proyecto/public/uploads/' + p.imagen"
+                 class="thumb" />
+          </td>
+
+          <td>{{ p.nombre }}</td>
+          <td>$ {{ p.precio }}</td>
+          <td>{{ p.stock }}</td>
+
+          <td class="acciones-tabla">
+            <button class="btn editar" (click)="editar(p)">Editar</button>
+            <button class="btn eliminar" (click)="eliminar(p.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

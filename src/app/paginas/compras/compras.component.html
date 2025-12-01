@@ -1,0 +1,38 @@
+<div class="container mt-4">
+
+  <h2 class="mb-4">Historial de Compras</h2>
+
+  <div *ngIf="cargando">Cargando compras...</div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!cargando && compras.length === 0">
+    <p>No hay compras registradas aún.</p>
+  </div>
+
+  <div class="list-group" *ngIf="compras.length > 0">
+
+    <div class="list-group-item mb-2" *ngFor="let c of compras">
+
+      <h5>Compra #{{ c.id_compra }}</h5>
+
+      <p class="mb-1">
+        <strong>Fecha:</strong> {{ c.fecha }} <br>
+        <strong>Total:</strong> ${{ c.total }} <br>
+        <strong>Ítems:</strong> {{ c.items?.length }}
+      </p>
+
+      <a
+        class="btn btn-primary btn-sm"
+        [routerLink]="['/ticket', c.id_compra]"
+      >
+        Ver Ticket
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

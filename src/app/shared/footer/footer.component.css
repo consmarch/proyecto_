@@ -1,0 +1,27 @@
+footer {
+  background-color: #f6b0ff; /* Cambiá este color por el que quieras */
+  color: white; /* Color del texto */
+  padding: 0px 0; /* Espaciado interno */
+}
+
+footer a {
+  color: white !important; /* Cambia el color de los enlaces */
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .border-bottom {
+  border-bottom: none !important;
+}
+
+footer {
+  margin-top: 0 !important;
+}
+
+footer .my-4,
+footer .mb-3 {
+  margin: 0 !important;
+}
