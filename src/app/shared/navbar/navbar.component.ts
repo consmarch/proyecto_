@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { NgIf,  } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { CarritoService } from '../../servicios/carrito.service';
 import { Producto } from '../../modelos/producto.model';
 import { AuthService } from '../../servicios/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +14,16 @@ import { AuthService } from '../../servicios/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   terminoBusqueda: string = '';
   cantidadProductos: number = 0;
+
+  // Variables para controlar visibilidad del menú
+  isLogged: boolean = false;
+  isAdmin: boolean = false;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private carritoService: CarritoService,
@@ -27,8 +33,8 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Suscripción al carrito para actualizar la cantidad
-    this.carritoService.carrito$.subscribe(
+    // Suscripción al carrito
+    const carritoSub = this.carritoService.carrito$.subscribe(
       (productos: { producto: Producto, cantidad: number }[]) => {
         this.cantidadProductos = productos.reduce(
           (total, item) => total + item.cantidad,
@@ -37,10 +43,13 @@ export class NavbarComponent implements OnInit {
       }
     );
 
-    // Suscripción al loginEvent para actualizar menú al iniciar sesión
-    this.auth.loginEvent.subscribe(() => {
-      // Los getters isLogged / isAdmin se actualizarán automáticamente
-    });
+    // Suscripción al estado de login
+    const loginSub = this.auth.isLoggedIn$.subscribe(status => this.isLogged = status);
+
+    // Suscripción al estado de admin
+    const adminSub = this.auth.isAdmin$.subscribe(status => this.isAdmin = status);
+
+    this.subscriptions.push(carritoSub, loginSub, adminSub);
   }
 
   buscar() {
@@ -51,20 +60,11 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.auth.logout();
-
-    // Emitir evento para actualizar menú inmediatamente
-    this.auth.loginEvent.emit();
-
-    // Redirigir al inicio
     this.router.navigate(['/']);
   }
 
-  // Getters para el HTML
-  get isLogged(): boolean {
-    return this.auth.isLoggedIn();
-  }
-
-  get isAdmin(): boolean {
-    return this.auth.esAdmin();
+  ngOnDestroy(): void {
+    // Limpiar todas las suscripciones al salir del componente
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
