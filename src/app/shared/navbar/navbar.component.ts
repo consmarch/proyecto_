@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { CarritoService} from '../../servicios/carrito.service';
+import { CarritoService } from '../../servicios/carrito.service';
 import { AuthService } from '../../servicios/auth.service';
 import { FormsModule } from '@angular/forms';
 
@@ -30,11 +30,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const carritoSub = this.carritoService.carrito$.subscribe(
-      (items: DetalleCarrito[]) => {
-        this.cantidadProductos = items.reduce((total, item) => total + item.cantidad, 0);
-      }
-    );
+    const carritoSub = this.carritoService.carrito$.subscribe(items => {
+      this.cantidadProductos = items.reduce((total: number, item: any) => total + item.cantidad, 0);
+    });
 
     const loginSub = this.auth.isLoggedIn$.subscribe(status => this.isLogged = status);
     const adminSub = this.auth.isAdmin$.subscribe(status => this.isAdmin = status);

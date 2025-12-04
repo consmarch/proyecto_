@@ -31,7 +31,7 @@ export class TicketComponent implements OnInit {
 
     // Necesario para permitir URLs de PDFs de manera segura en Angular.
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -47,6 +47,7 @@ export class TicketComponent implements OnInit {
 
         // Construye manualmente la URL pública donde se guarda el PDF en el servidor.
         const url = `http://localhost/api_proyecto/public/tickets/ticket_${ticket.numero_ticket}.pdf`;
+
 
         // Angular bloquea URLs externas por seguridad, así que hay que "sanitizar" la URL
         // para usarla como src en un <iframe> o <embed>.

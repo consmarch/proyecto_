@@ -10,6 +10,7 @@ import { IsesionComponent } from './paginas/isesion/isesion.component';
 import { RegistrarComponent } from './paginas/registrar/registrar.component';
 import { AdminGuard } from './guards/admin.guards';
 import { AdminComponent } from './paginas/admin/admin.component';
+import { TicketComponent } from './paginas/ticket/ticket.component';
 
 
 export const routes: Routes = [
@@ -25,5 +26,6 @@ export const routes: Routes = [
 {path: 'dibuja', component: DibujaComponent},
 {path: 'isesion', component: IsesionComponent},
 {path: 'registrar', component: RegistrarComponent},
-{path: 'admin', component: AdminComponent}
+{path: 'admin', component: AdminComponent},
+{path: 'ticket/:id', component: TicketComponent}
 ];

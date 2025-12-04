@@ -1,40 +1,38 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Producto } from '../../modelos/producto.model';
-import { CarritoService, DetalleCarrito } from '../../servicios/carrito.service';
-import { ProductService } from '../../servicios/product.service';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ProductService } from '../../servicios/product.service';
+import { CarritoService } from '../../servicios/carrito.service';
 import { FormsModule } from '@angular/forms';
+import { Producto } from '../../modelos/producto.model';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css']
 })
 export class ProductosComponent implements OnInit {
 
-  @ViewChild('track', { static: false }) track!: ElementRef;
-
   productos: Producto[] = [];
   filteredProducts: Producto[] = [];
 
-  cargando = true;
-  error = '';
+  // Filtros
+  selectedCategory: string = '';
+  selectedBrand: string = '';
+  minPrecio: number | null = null;
+  maxPrecio: number | null = null;
 
   categoria: string[] = [];
   nombre: string[] = [];
 
-  selectedCategory = '';
-  selectedBrand = '';
-  minPrecio: number | null = null;
-  maxPrecio: number | null = null;
+  cargando = true;
+  error = '';
 
   constructor(
     private productService: ProductService,
-    private carritoService: CarritoService
-  ) {}
+    private carritoService: CarritoService,
+  ) { }
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -42,30 +40,39 @@ export class ProductosComponent implements OnInit {
 
   cargarProductos(): void {
     this.productService.obtenerProductos().subscribe({
+
       next: (res: Producto[]) => {
         this.productos = res;
         this.filteredProducts = res;
 
-        this.categoria = Array.from(new Set(res.map(p => p.categoria)));
-        this.nombre = Array.from(new Set(res.map(p => p.nombre)));
+        res.forEach(producto => {
+          console.log("IMAGEN:", producto.imagen);
+          console.log("URL ARMADA:", 'http://localhost/api_proyecto/public/uploads/' + producto.imagen);
+        });
 
         this.cargando = false;
       },
+
+
       error: (err: any) => {
-        console.error(err);
+        console.error('Error al cargar productos:', err);
         this.error = 'No se pudieron cargar los productos.';
         this.cargando = false;
       }
+
     });
   }
 
+
   filtrarProductos(): void {
-    this.filteredProducts = this.productos.filter(prod => 
-      (this.selectedCategory === '' || prod.categoria === this.selectedCategory) &&
-      (this.selectedBrand === '' || prod.nombre === this.selectedBrand) &&
-      (this.minPrecio === null || prod.precio >= this.minPrecio) &&
-      (this.maxPrecio === null || prod.precio <= this.maxPrecio)
-    );
+    this.filteredProducts = this.productos.filter(p => {
+      const porCategoria = this.selectedCategory ? p.categoria === this.selectedCategory : true;
+      const porNombre = this.selectedBrand ? p.nombre === this.selectedBrand : true;
+      const porMin = this.minPrecio !== null ? p.precio >= this.minPrecio : true;
+      const porMax = this.maxPrecio !== null ? p.precio <= this.maxPrecio : true;
+
+      return porCategoria && porNombre && porMin && porMax;
+    });
   }
 
   resetFilters(): void {
@@ -73,28 +80,16 @@ export class ProductosComponent implements OnInit {
     this.selectedBrand = '';
     this.minPrecio = null;
     this.maxPrecio = null;
-    this.filteredProducts = [...this.productos];
+
+    this.filteredProducts = this.productos;
   }
 
   agregarAlCarrito(producto: Producto): void {
-    const item: DetalleCarrito = {
-      id_detalle_carrito: Date.now(),
-      producto_id: producto.id,
-      nombre: producto.nombre,
-      cantidad: 1,
-      precio_unitario: producto.precio,
-      subtotal: producto.precio,
-      imagen: producto.img
-    };
-    this.carritoService.agregarAlCarrito(item);
-    console.log('Producto agregado al carrito');
+    this.carritoService.agregarAlCarrito(producto).subscribe({
+      next: () => console.log('Producto agregado'),
+      error: (err: any) => console.error(err)
+    });
   }
 
-  scrollLeft(): void {
-    this.track?.nativeElement.scrollBy({ left: -200, behavior: 'smooth' });
-  }
 
-  scrollRight(): void {
-    this.track?.nativeElement.scrollBy({ left: 200, behavior: 'smooth' });
-  }
 }

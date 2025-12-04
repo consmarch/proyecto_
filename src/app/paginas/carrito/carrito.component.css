@@ -1,6 +1,6 @@
 /* Contenedor principal */
 .container {
-  background: #fff0f6; /* Rosa muy suave de fondo */
+  background: #efadc7; /* Rosa muy suave de fondo */
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(255, 192, 203, 0.3); /* Sombra rosa */
@@ -27,8 +27,8 @@ table th, table td {
 }
 
 table th {
-  background-color: #f8c6d0; /* Rosa suave */
-  color: #841f4a; /* Rosa oscuro para el texto */
+  background-color: #fa50c7; /* Rosa suave */
+  color: #ffffff; /* Rosa oscuro para el texto */
   font-weight: 600;
 }
 
