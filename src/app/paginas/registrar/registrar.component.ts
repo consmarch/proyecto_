@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './registrar.component.css'
 })
 export class RegistrarComponent {
-// Objeto que contiene los datos del nuevo usuario.
+
+  // Objeto que contiene los datos del nuevo usuario.
   // Se enlaza al formulario mediante ngModel en la plantilla.
   nuevoUsuario = {
     nombre: '',
@@ -52,10 +53,8 @@ export class RegistrarComponent {
         console.error('Error en el registro', err);
 
         // Mensaje para mostrar en la interfaz.
-console.log("Texto recibido:", err.error?.text);
+        this.error = 'Error al registrar el usuario.';
       }
     });
   }
 }
-
-
