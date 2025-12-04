@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { NgIf,  } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { CarritoService } from '../../servicios/carrito.service';
-import { Producto } from '../../modelos/producto.model';
+import { CarritoService} from '../../servicios/carrito.service';
 import { AuthService } from '../../servicios/auth.service';
 import { FormsModule } from '@angular/forms';
 
@@ -19,7 +18,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   terminoBusqueda: string = '';
   cantidadProductos: number = 0;
 
-  // Variables para controlar visibilidad del menú
   isLogged: boolean = false;
   isAdmin: boolean = false;
 
@@ -32,21 +30,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-
-    // Suscripción al carrito
     const carritoSub = this.carritoService.carrito$.subscribe(
-      (productos: { producto: Producto, cantidad: number }[]) => {
-        this.cantidadProductos = productos.reduce(
-          (total, item) => total + item.cantidad,
-          0
-        );
+      (items: DetalleCarrito[]) => {
+        this.cantidadProductos = items.reduce((total, item) => total + item.cantidad, 0);
       }
     );
 
-    // Suscripción al estado de login
     const loginSub = this.auth.isLoggedIn$.subscribe(status => this.isLogged = status);
-
-    // Suscripción al estado de admin
     const adminSub = this.auth.isAdmin$.subscribe(status => this.isAdmin = status);
 
     this.subscriptions.push(carritoSub, loginSub, adminSub);
@@ -64,7 +54,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpiar todas las suscripciones al salir del componente
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

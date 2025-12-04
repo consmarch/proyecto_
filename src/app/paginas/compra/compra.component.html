@@ -1,138 +1,59 @@
+<div class="container mt-4">
 
-<body>
+  <h2 class="text-center mb-4">Finalizar Compra</h2>
 
-<h2 class="text-center mb-4">Formulario de Compra</h2>
+  <div *ngIf="mensaje" class="alert alert-info text-center">
+    {{ mensaje }}
+  </div>
 
-<form [formGroup]="formularioCompra" (ngSubmit)="finalizarCompra()" class="mx-auto" style="max-width: 600px">
-    <!--Campos del formulario-->
-    <div class="row g-3 mb-3">
-        <div class="col-md-6">
-            <label for="nombre" class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                <input id="nombre" formControlName="nombre" class="form-control" placeholder="Tu nombre completo" />
-            </div>
-            <div *ngIf="formularioCompra.get('nombre')?.touched && formularioCompra.get('nombre')?.invalid"
-                class="form-text text-danger">
-                El nombre es obligatorio
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <label for="telefono" class="form-label fw-semibold">Telefono<span class="text-danger">*</span></label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                <input id="telefono" formControlName="telefono" class="form-control"
-                    placeholder="Ej: +54 9 11 1234 5678" />
-            </div>
-            <div *ngIf="formularioCompra.get('telefono')?.touched && formularioCompra.get('telefono')?.invalid"
-                class="form-text text-danger">
-                El Telefono es obligatorio
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="correo" class="form-label fw-semibold">Correo <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                <input id="correo" formControlName="correo" type="email" class="form-control"
-                    placeholder="EJ: ejemplo@correo.com" />
-            </div>
-            <div *ngIf="formularioCompra.get('correo')?.touched && formularioCompra.get('correo')?.invalid"
-                class="form-text text-danger">
-                Ingrese un correo valido
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="direccion" class="form-label fw-semibold">Direccion <span class="text-danger">*</span></label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                <input id="direccion" formControlName="direccion" class="form-control"
-                    placeholder="Calle, numero , piso , depto" />
-            </div>
-            <div *ngIf="formularioCompra.get('direccion')?.touched && formularioCompra.get('direccion')?.invalid"
-                class="form-text text-danger">
-                La direccion es obligatoria
-            </div>
-        </div>
-        <div class="row g-3 mb-3">
-            <div class="col-md-4">
-                <label for="ciudad" class="form-label fw-semibold">Ciudad <span class="text-danger">*</span></label>
-                <input id="ciudad" formControlName="ciudad" class="form-control" placeholder="Ej: Cipolletti" />
-                <div *ngIf="formularioCompra.get('ciudad')?.touched && formularioCompra.get('ciudad')?.invalid"
-                    class="form-text text-danger">
-                    La ciudad es obligatoria
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <label for="provincia" class="form-label fw-semibold">Provincia <span
-                        class="text-danger">*</span></label>
-                <input id="provincia" formControlName="provincia" class="form-control" placeholder="Ej: Rio Negro" />
-                <div *ngIf="formularioCompra.get('provincia')?.touched && formularioCompra.get('provincia')?.invalid"
-                    class="form-text text-danger">
-                    La Provinca es obligatoria
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <label for="codigoPostal" class="form-label fw-semibold">Codigo Postal<span
-                        class="text-danger">*</span></label>
-                <input id="codigoPostal" formControlName="codigoPostal" class="form-control" placeholder="Ej: 1234" />
-                <div *ngIf="formularioCompra.get('codigoPostal')?.touched && formularioCompra.get('codigoPostal')?.invalid"
-                    class="form-text text-danger">
-                    El codigo postal es obligatorio
-                </div>
-            </div>
-        </div>
+  <div class="card shadow-sm mb-4" *ngIf="productos.length > 0">
+    <div class="card-header bg-primary text-white">
+      <strong>Productos en tu carrito</strong>
     </div>
-    <div class="mb-3">
-        <label for="metodoPago" class="form-label fw-semibold">Metodo de Pago<span class="text-danger">*</span></label>
-        <select id="metodoPago" formControlName="metodoPago" class="form-select">
-            <option value="" disabled selected>Seleccione metodo de Pago</option>
-            <option value="tarjeta">Tarjeta de Credito/Debito</option>
-            <option value="efectivo">Efectivo</option>
-            <option value="transferencia">Transferencia Bancaria</option>
-        </select>
-        <div *ngIf="formularioCompra.get('metodoPago')?.touched && formularioCompra.get('metodoPago')?.invalid"
-            class="form-text text-danger">
-            Debes seleccionar un metodo de Pago
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let p of productos" class="list-group-item d-flex">
+        <img *ngIf="p.imagen"
+          [src]="'http://localhost/api_proyecto/public/uploads/' + p.imagen"
+          class="rounded me-3"
+          style="width: 70px; height: 70px; object-fit: cover;">
+        <div class="flex-grow-1">
+          <strong>{{ p.nombre }}</strong>
+          <small>
+            Cantidad: {{ p.cantidad }} <br>
+            Precio: ${{ p.precio_unitario }} <br>
+            Subtotal: <strong>${{ p.subtotal }}</strong>
+          </small>
         </div>
-    </div>
+      </li>
+    </ul>
+  </div>
 
-    <div class="d-flex justify-content-between align-items-center my-4">
-        <div>
-            <p> Envio: ${{envio.toFixed(2)}}</p>
-            <p> <strong>Total a Pagar :${{calcularTotal()}}</strong></p>
-        </div>
-        <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+  <div class="card shadow-sm mb-4" *ngIf="productos.length > 0">
+    <div class="card-body">
+      <h4>Resumen</h4>
+      <p>Subtotal: ${{ subtotal }}</p>
+      <p>Envío: ${{ envio }}</p>
+      <hr>
+      <h4>Total: <strong>${{ total }}</strong></h4>
     </div>
-</form>
+  </div>
 
-<!--Modal PDF-->
-<div *ngIf="mostrarModal" class="modal show d-block" tabindex="-1" role="dialog"
-    style="background: rgba(0, 0, 0, 0.5);">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 90vw; max-height: 90vh;">
-        <div class="modal-content" style="height: 90vh;">
-            <div class="modal-header">
-                <h5 class="modal-title">Factura PDF</h5>
-                <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrarModal()"></button>
-            </div>
-            <div class="modal-body p-0" style="height: 80vh;">
-                <iframe *ngIf="pdfSrc" [src]="pdfSrc" id="pdfFrame"
-                    style="width: 100%; height: 100%; border: none;"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" (click)="imprimirPDF()">
-                    Imprimir
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
-                    Cerrar
-                </button>
-            </div>
-        </div>
+  <div class="card shadow-sm" *ngIf="productos.length > 0">
+    <div class="card-header bg-success text-white">Datos de envío</div>
+    <div class="card-body">
+      <input class="form-control mb-3" placeholder="Dirección" [(ngModel)]="datos.direccion">
+      <input class="form-control mb-3" placeholder="Teléfono" [(ngModel)]="datos.telefono">
+
+      <button class="btn btn-success w-100"
+        (click)="finalizarCompra()"
+        [disabled]="cargando">
+        {{ cargando ? 'Procesando...' : 'Confirmar compra' }}
+      </button>
     </div>
+  </div>
+
+  <div *ngIf="productos.length === 0" class="alert alert-warning text-center">
+    Tu carrito está vacío.
+  </div>
+
 </div>
-
-</body>

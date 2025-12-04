@@ -1,82 +1,107 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CarritoService } from '../../servicios/carrito.service';
 
 @Component({
   selector: 'app-carrito',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './carrito.component.html',
-  styleUrl: './carrito.component.css'
+  styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
 
+  // Arreglo donde se almacenan los productos del carrito recibidos desde el backend.
   carrito: any[] = [];
+
+  // Costo fijo de envío (puede parametrizarse más adelante).
   envio: number = 1500;
+
+  // Total acumulado del carrito (se recalcula cada vez que cambian los items).
   total: number = 0;
 
   constructor(
+    // Servicio que maneja todas las peticiones relacionadas al carrito.
     public carritoService: CarritoService,
+
+    // Router para navegar a la pantalla de compra.
     private router: Router
   ) {}
 
+  // Método del ciclo de vida de Angular, se ejecuta al inicializar el componente.
   ngOnInit(): void {
-    this.cargarCarrito();
+    this.cargarCarrito(); // Carga los productos del carrito desde el backend.
   }
 
-  // Carga los productos del BehaviorSubject
+  // Solicita los ítems del carrito al backend y los actualiza en el componente.
   cargarCarrito(): void {
-    this.carrito = this.carritoService.obtenerProductos();
-    this.calcularTotal();
+    this.carritoService.obtenerCarrito().subscribe({
+      next: (items: any[]) => {
+        // En caso de respuesta válida, guardamos los ítems o un array vacío.
+        this.carrito = items || [];
+
+        // Recalculamos el total del carrito.
+        this.calcularTotal();
+      },
+      error: () => {
+        // Si hubo un error, mostramos carrito vacío y total 0.
+        this.carrito = [];
+        this.total = 0;
+      }
+    });
   }
 
-  // Calcula el total del carrito
+  // Calcula el total sumando los subtotales de todos los productos.
   calcularTotal(): void {
     this.total = this.carrito.reduce(
-      (sum, item) => sum + Number(item.producto.precio) * item.cantidad,
+      (sum, item) => sum + Number(item.subtotal),
       0
     );
   }
 
-  // Cambia la cantidad de un producto a un valor específico
-  cambiarCantidad(productoId: number, nuevaCantidad: number): void {
-    this.carritoService.actualizarCantidad(productoId, nuevaCantidad);
-    this.cargarCarrito();
+  // Cambia la cantidad de un ítem del carrito.
+  // Ahora trabaja correctamente con id_detalle_carrito proveniente del backend.
+  cambiarCantidad(idDetalleCarrito: number, event: any): void {
+    const nuevaCantidad = Number(event.target.value);
+
+    this.carritoService.actualizarCantidad(idDetalleCarrito, nuevaCantidad).subscribe({
+      next: (res: any) => {
+        // El backend puede devolver el carrito dentro de res.carrito.
+        // Por compatibilidad, también aceptamos res directo.
+        const items = res.carrito ?? res ?? [];
+
+        this.carrito = items;
+        this.calcularTotal();
+      }
+    });
   }
 
-  // Aumenta la cantidad de un producto
-  agregarCantidad(index: number): void {
-    const item = this.carrito[index];
-    if (item) {
-      this.carritoService.actualizarCantidad(item.producto.id, item.cantidad + 1);
-      this.cargarCarrito();
-    }
+  // Elimina un ítem del carrito usando su id_detalle_carrito.
+  eliminar(idDetalleCarrito: number): void {
+    this.carritoService.eliminarProducto(idDetalleCarrito).subscribe({
+      next: (res: any) => {
+        // Igual manejo de compatibilidad con res o res.carrito.
+        const items = res.carrito ?? res ?? [];
+
+        this.carrito = items;
+        this.calcularTotal();
+      }
+    });
   }
 
-  // Disminuye la cantidad de un producto
-  restarCantidad(index: number): void {
-    const item = this.carrito[index];
-    if (item && item.cantidad > 1) {
-      this.carritoService.actualizarCantidad(item.producto.id, item.cantidad - 1);
-      this.cargarCarrito();
-    }
-  }
-
-  // Elimina un producto del carrito
-  eliminarProducto(productoId: number): void {
-    this.carritoService.eliminarDelCarrito(productoId);
-    this.cargarCarrito();
-  }
-
-  // Vacía todo el carrito
+  // Vacía completamente el carrito.
   vaciarCarrito(): void {
-    this.carritoService.vaciarCarrito();
-    this.carrito = [];
-    this.total = 0;
+    this.carritoService.vaciarCarrito().subscribe({
+      next: () => {
+        // Resetea carrito y total al vaciarse.
+        this.carrito = [];
+        this.total = 0;
+      }
+    });
   }
 
-  // Navega a la página de compra
+  // Navega a la página de compra para finalizar el proceso.
   irACompra(): void {
     this.router.navigate(['/compra']);
   }

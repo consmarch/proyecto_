@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Producto } from '../../modelos/producto.model';
-import { CarritoService } from '../../servicios/carrito.service';
+import { CarritoService, DetalleCarrito } from '../../servicios/carrito.service';
 import { ProductService } from '../../servicios/product.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -25,7 +25,6 @@ export class ProductosComponent implements OnInit {
 
   categoria: string[] = [];
   nombre: string[] = [];
-  tipos: any[] = [];
 
   selectedCategory = '';
   selectedBrand = '';
@@ -47,18 +46,13 @@ export class ProductosComponent implements OnInit {
         this.productos = res;
         this.filteredProducts = res;
 
-        this.categoria = Array.from(
-          new Set<string>(res.map((p: Producto) => p.categoria))
-        );
-
-        this.nombre = Array.from(
-          new Set<string>(res.map((p: Producto) => p.nombre))
-        );
+        this.categoria = Array.from(new Set(res.map(p => p.categoria)));
+        this.nombre = Array.from(new Set(res.map(p => p.nombre)));
 
         this.cargando = false;
       },
       error: (err: any) => {
-        console.error('Error:', err);
+        console.error(err);
         this.error = 'No se pudieron cargar los productos.';
         this.cargando = false;
       }
@@ -66,14 +60,12 @@ export class ProductosComponent implements OnInit {
   }
 
   filtrarProductos(): void {
-    this.filteredProducts = this.productos.filter(prod => {
-      return (
-        (this.selectedCategory === '' || prod.categoria === this.selectedCategory) &&
-        (this.selectedBrand === '' || prod.nombre === this.selectedBrand) &&
-        (this.minPrecio === null || prod.precio >= this.minPrecio) &&
-        (this.maxPrecio === null || prod.precio <= this.maxPrecio)
-      );
-    });
+    this.filteredProducts = this.productos.filter(prod => 
+      (this.selectedCategory === '' || prod.categoria === this.selectedCategory) &&
+      (this.selectedBrand === '' || prod.nombre === this.selectedBrand) &&
+      (this.minPrecio === null || prod.precio >= this.minPrecio) &&
+      (this.maxPrecio === null || prod.precio <= this.maxPrecio)
+    );
   }
 
   resetFilters(): void {
@@ -81,34 +73,28 @@ export class ProductosComponent implements OnInit {
     this.selectedBrand = '';
     this.minPrecio = null;
     this.maxPrecio = null;
-
     this.filteredProducts = [...this.productos];
   }
 
   agregarAlCarrito(producto: Producto): void {
-    this.carritoService.agregarAlCarrito(producto);
+    const item: DetalleCarrito = {
+      id_detalle_carrito: Date.now(),
+      producto_id: producto.id,
+      nombre: producto.nombre,
+      cantidad: 1,
+      precio_unitario: producto.precio,
+      subtotal: producto.precio,
+      imagen: producto.img
+    };
+    this.carritoService.agregarAlCarrito(item);
     console.log('Producto agregado al carrito');
   }
 
-  // ===============================
-  // Métodos para el slider
-  // ===============================
-
   scrollLeft(): void {
-    if (this.track) {
-      this.track.nativeElement.scrollBy({
-        left: -200,
-        behavior: 'smooth'
-      });
-    }
+    this.track?.nativeElement.scrollBy({ left: -200, behavior: 'smooth' });
   }
 
   scrollRight(): void {
-    if (this.track) {
-      this.track.nativeElement.scrollBy({
-        left: 200,
-        behavior: 'smooth'
-      });
-    }
+    this.track?.nativeElement.scrollBy({ left: 200, behavior: 'smooth' });
   }
 }

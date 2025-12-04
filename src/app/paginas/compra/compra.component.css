@@ -1,58 +1,107 @@
-body{
-    background-color: rgb(250, 146, 203);
-    margin: 0%;
+/* Contenedor principal */
+.container {
+  max-width: 800px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
 }
 
-
-
-.container{
-    max-width: 600px;
-    margin: auto;
-}
-div{
-    margin-bottom: 15px;
-}
-label{
-    display: block;
-    font-weight: bold;
-}
-input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
-    border-color: #dc3545;
-}
-input,select{
-    width: 100%;
-    padding: 8px;
-}
-/* Estilos basico para modal */
-
-.modal-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.modal-content{
-    background: rgb(255, 255, 255);
-    padding: 1rem;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 800px;
-    position: relative;
-    box-shadow: 0 2px 10px rgba(0, 0, 0,0.3);
+/* Título */
+h2 {
+  color: #d63384; /* rosa fuerte */
 }
 
-.cerrar-btn{
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+/* Mensajes */
+.alert-info {
+  background-color: #ffe6f0;
+  color: #d63384;
+  border: 1px solid #ffb3cc;
+}
+
+.alert-warning {
+  background-color: #ffe6f0;
+  color: #d63384;
+  border: 1px solid #ffb3cc;
+}
+
+/* Cards */
+.card {
+  border-radius: 10px;
+  border: 1px solid #ffb3cc;
+}
+
+/* Header de las cards */
+.card-header.bg-primary {
+  background-color: #ff66b2 !important;
+}
+
+.card-header.bg-success {
+  background-color: #ff3399 !important;
+}
+
+/* Lista de productos */
+.list-group-item {
+  background-color: #fff0f6;
+  border: none;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+/* Imagen del producto */
+.list-group-item img {
+  border-radius: 8px;
+  border: 1px solid #ffb3cc;
+}
+
+/* Texto de productos */
+.list-group-item strong {
+  color: #d63384;
+}
+
+.list-group-item .text-muted {
+  color: #b30059 !important;
+}
+
+.list-group-item small {
+  color: #99004d;
+}
+
+/* Resumen de compra */
+.card-body h4 {
+  color: #d63384;
+}
+
+.card-body p {
+  color: #b30059;
+}
+
+/* Inputs */
+.form-control {
+  border: 1px solid #ffb3cc;
+  border-radius: 5px;
+  background-color: #fff0f6;
+  color: #99004d;
+}
+
+.form-control:focus {
+  border-color: #ff3399;
+  box-shadow: 0 0 5px #ffb3cc;
+}
+
+/* Botón de confirmar compra */
+.btn-success {
+  background-color: #ff3399;
+  border-color: #ff3399;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-success:hover {
+  background-color: #d63384;
+  border-color: #d63384;
+}
+
+/* Total */
+hr {
+  border-top: 2px solid #ffb3cc;
 }
