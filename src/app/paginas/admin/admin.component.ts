@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../../servicios/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -36,7 +37,7 @@ export class AdminComponent implements OnInit {
 
     // FormBuilder para simplificar la creación del formulario reactivo.
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   // Se ejecuta al iniciar el componente.
   ngOnInit(): void {
@@ -87,10 +88,12 @@ export class AdminComponent implements OnInit {
     formData.append("precio", this.formulario.value.precio);
     formData.append("stock", this.formulario.value.stock);
 
-    // Solo enviamos la imagen si se seleccionó una nueva.
     if (this.archivoImagen) {
-      formData.append("imagen", this.archivoImagen);
+      formData.append("imagen", this.archivoImagen); // Nueva imagen
+    } else {
+      formData.append("imagenActual", this.productoActual?.imagen ?? ""); // Imagen que ya tenía
     }
+
 
     // EDICIÓN
     if (this.editando) {
@@ -104,7 +107,7 @@ export class AdminComponent implements OnInit {
         error: (err) => console.error("Error actualizando producto", err)
       });
 
-    } 
+    }
     // CREACIÓN
     else {
 
@@ -113,7 +116,10 @@ export class AdminComponent implements OnInit {
           alert("Producto creado");
           this.reset();
           this.cargarProductos();
+
+          //REDIRECCIÓN  this.router.navigate(['/productos']);
         },
+
         error: () => alert("Error al crear producto")
       });
     }

@@ -1,25 +1,12 @@
-<div class="fotopro"> <img src="img/arpro.png" alt="" aria-hidden="true" class="bd-placeholder-img" height="100%"
-    preserveAspectRatio="xMidYMid slice" width="100%">
+<div class="fotopro">
+  <img src="img/arpro.png" alt="" aria-hidden="true" class="bd-placeholder-img" height="100%"
+       preserveAspectRatio="xMidYMid slice" width="100%">
   <div class="container">
     <div class="carousel-caption">
       <h1 class="texto">Los Productos de Dulce Muna</h1>
-      <p class="texto">Personaliza todo con el nombre y diseño que mas te guste</p>
+      <p class="texto">Personaliza todo con el nombre y diseño que más te guste</p>
     </div>
   </div>
-</div>
-
-
-
-<!-- ===== Slider de tipos ===== -->
-<div class="slider-container">
-  <button class="nav prev" (click)="scrollLeft()">&#8249;</button>
-  <div class="card-track" #track>
-    <div *ngFor="let tipo of tipos" class="card2">
-      <img [src]="tipo.img" alt="{{tipo.nombre}}">
-      <h2>{{tipo.nombre}}</h2>
-    </div>
-  </div>
-  <button class="nav next" (click)="scrollRight()">&#8250;</button>
 </div>
 
 <!-- ===== Filtro ===== -->
@@ -27,7 +14,7 @@
   <div class="row mb-3">
     <div class="col-md-3">
       <label>Categoria</label>
-      <select class="form-select" [(ngModel)]="selectedCategory" name="categoria">
+      <select class="form-select" [(ngModel)]="selectedCategory" name="categoria" (change)="filtrarProductos()">
         <option value="">Todas</option>
         <option *ngFor="let categoria of categoria" [value]="categoria">{{ categoria }}</option>
       </select>
@@ -35,7 +22,7 @@
 
     <div class="col-md-3">
       <label>Tipo</label>
-      <select class="form-select" [(ngModel)]="selectedBrand" name="nombre">
+      <select class="form-select" [(ngModel)]="selectedBrand" name="nombre" (change)="filtrarProductos()">
         <option value="">Todas</option>
         <option *ngFor="let nombre of nombre" [value]="nombre">{{ nombre }}</option>
       </select>
@@ -43,12 +30,12 @@
 
     <div class="col-md-2">
       <label>Precio min</label>
-      <input type="number" class="form-control" [(ngModel)]="minPrecio" name="minPrecio">
+      <input type="number" class="form-control" [(ngModel)]="minPrecio" name="minPrecio" (input)="filtrarProductos()">
     </div>
 
     <div class="col-md-2">
       <label>Precio max</label>
-      <input type="number" class="form-control" [(ngModel)]="maxPrecio" name="maxPrecio">
+      <input type="number" class="form-control" [(ngModel)]="maxPrecio" name="maxPrecio" (input)="filtrarProductos()">
     </div>
 
     <div class="col-md-2 d-flex align-items-end">
@@ -59,24 +46,39 @@
   </div>
 </div>
 
-<!-- ===== Productos filtrados ===== -->
-<div class="card-container">
-  <ng-container *ngIf="filteredProducts && filteredProducts.length">
-    <ng-container *ngFor="let producto of filteredProducts">
-      <div *ngIf="producto.disponibilidad" class="card">
-        <img [src]="producto.img" alt="{{ producto.img }}" class="product-image">
-        <h2>{{ producto.nombre }}</h2>
-        <p>Precio: {{ producto.precio }}</p>
-        <p *ngIf="producto.cantidad">Cantidad: {{ producto.cantidad }}</p>
-        <p>Categoria: {{ producto.categoria }}</p>
-        <button type="button" class="btn btn-outline-primary" (click)="agregar(producto)">
-          Agregar al carrito
-        </button>
-      </div>
-    </ng-container>
-  </ng-container>
+<!-- Spinner de carga -->
+<div *ngIf="cargando" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-3">Cargando productos...</p>
+</div>
 
-  <div *ngIf="filteredProducts.length == 0" class="text-muted">
-    No se encontraron productos que coincidan con los filtros
+<!-- Mensaje de error -->
+<div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+<!-- Listado de productos -->
+<div class="row g-4">
+  <div *ngFor="let producto of filteredProducts" class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <img
+        [src]="'http://localhost/api_proyecto/public/uploads/' + producto.img"
+        class="card-img-top"
+        alt="{{ producto.nombre }}"
+        style="object-fit: cover; height: 220px;"
+      />
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ producto.nombre }}</h5>
+        <p class="fw-bold mt-auto">Precio: ${{ producto.precio | number:'1.2-2' }}</p>
+
+        <!-- Botón de carrito -->
+        <div class="mt-3 d-flex justify-content-between">
+          <button
+            class="btn btn-success btn-sm me-2"
+            (click)="agregarAlCarrito(producto)"
+          >
+            <i class="bi bi-cart-plus"></i> Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

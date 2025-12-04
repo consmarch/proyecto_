@@ -1,15 +1,15 @@
 <body>
     <h1 class="text">Carrito de Compras</h1>
 
-    <div *ngIf="productoEnCarrito.length === 0" class="alert alert-warning text-center">
+    <div *ngIf="carrito.length === 0" class="alert alert-warning text-center">
         <p>No hay productos en el carrito </p>
     </div>
 
-    <div *ngIf="productoEnCarrito.length > 0" class="container">
+    <div *ngIf="carrito.length > 0" class="container">
         <table class="table table-hover table-bordered align-middle text-center">
             <thead>
                 <tr>
-                    <th >Imagen</th>
+                    <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Categoria</th>
                     <th>Precio</th>
@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody class="tabla">
-                <tr *ngFor="let item of productoEnCarrito;let i = index">
+                <tr *ngFor="let item of carrito;let i = index">
                     <td>
                         <img [src]="item.producto.img" alt="{{item.producto.nombre}}" class="img-thumbnail"
                             style="width: 70px; height: 70px;">
@@ -28,7 +28,7 @@
                     <td>{{item.producto.precio }}</td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Cantidad">
-                            <button class="btn btn-outline-danger btn-sm" (click)="quitarCantidad(i)">-</button>
+                            <button class="btn btn-outline-danger btn-sm" (click)="restarCantidad(i)">-</button>
                             <span class="px-2">{{item.cantidad}}</span>
                             <button class="btn btn-outline-success btn-sm" (click)="agregarCantidad(i)">+</button>
                         </div>
@@ -41,39 +41,39 @@
                 </tr>
             </tbody>
         </table>
-        <div class="text-end mt-4" *ngIf="productoEnCarrito.length > 0">
+        <div class="text-end mt-4" *ngIf="carrito.length > 0">
             <h4 class=" fw-bold">Total : {{calcularTotal()}}</h4>
-            <button class="btn btn-primary mt-2" (click)="irAFormularioCompra()">
-                <i class="bi bi-cart-check"> Realizar Compra</i>
+            <button class="btn btn-primary mt-2" (click)="irACompra()">
+                <i class=" bi bi-cart-check"> Realizar Compra</i>
             </button>
         </div>
     </div>
 
 
-<!-- From Uiverse.io by JkHuger --> 
-			
-	<div class="piggy-wrapper">
-		<div class="piggy-wrap">
-			<div class="piggy">
-				<div class="nose"></div>
-				<div class="mouth"></div>
-				<div class="ear"></div>
-				<div class="tail">
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-				</div>
-				<div class="eye"></div>
-				<div class="hole"></div>
-			</div>
-		</div>
-		<div class="coin-wrap">
-			<div class="coin">$</div>
-		</div>
-		<div class="legs"></div>
-		<div class="legs back"></div>
-	</div>
+    <!-- From Uiverse.io by JkHuger -->
+
+    <div class="piggy-wrapper">
+        <div class="piggy-wrap">
+            <div class="piggy">
+                <div class="nose"></div>
+                <div class="mouth"></div>
+                <div class="ear"></div>
+                <div class="tail">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="eye"></div>
+                <div class="hole"></div>
+            </div>
+        </div>
+        <div class="coin-wrap">
+            <div class="coin">$</div>
+        </div>
+        <div class="legs"></div>
+        <div class="legs back"></div>
+    </div>
 
 
 
