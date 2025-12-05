@@ -1,59 +1,60 @@
-<div class="container mt-4">
+<div class="checkout-wrapper">
 
-  <h2 class="text-center mb-4">Finalizar Compra</h2>
+  <h2 class="title">Finalizar Compra</h2>
 
-  <div *ngIf="mensaje" class="alert alert-info text-center">
+  <!-- Mensaje -->
+  <div *ngIf="mensaje" class="info-bubble">
     {{ mensaje }}
   </div>
 
-  <div class="card shadow-sm mb-4" *ngIf="productos.length > 0">
-    <div class="card-header bg-primary text-white">
-      <strong>Productos en tu carrito</strong>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li *ngFor="let p of productos" class="list-group-item d-flex">
-        <img *ngIf="p.imagen"
-          [src]="'http://localhost/api_proyecto/public/uploads/' + p.imagen"
-          class="rounded me-3"
-          style="width: 70px; height: 70px; object-fit: cover;">
-        <div class="flex-grow-1">
-          <strong>{{ p.nombre }}</strong>
-          <p class="text-muted">{{ p.descripcion }}</p>
-          <small>
-            Cantidad: {{ p.cantidad }} <br>
-            Precio: ${{ p.precio_unitario }} <br>
-            Subtotal: <strong>${{ p.subtotal }}</strong>
-          </small>
+  <!-- Productos -->
+  <div class="glass-card" *ngIf="productos.length > 0">
+    <h3 class="section-title">Productos</h3>
+
+    <div class="product-card" *ngFor="let p of productos">
+
+      <img *ngIf="p.imagen"
+           class="prod-img"
+           [src]="'http://localhost/api_proyecto/public/uploads/' + p.imagen">
+
+      <div class="prod-data">
+        <h4>{{ p.nombre }}</h4>
+        <small class="desc">{{ p.descripcion }}</small>
+
+        <div class="prod-meta">
+          <span>Cant: <strong>{{ p.cantidad }}</strong></span>
+          <span>Precio: ${{ p.precio_unitario }}</span>
+          <span class="sub">Subtotal: ${{ p.subtotal }}</span>
         </div>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card shadow-sm mb-4" *ngIf="productos.length > 0">
-    <div class="card-body">
-      <h4>Resumen</h4>
-      <p>Subtotal: ${{ subtotal }}</p>
-      <p>Envío: ${{ envio }}</p>
-      <hr>
-      <h4>Total: <strong>${{ total }}</strong></h4>
+      </div>
     </div>
   </div>
 
-  <div class="card shadow-sm" *ngIf="productos.length > 0">
-    <div class="card-header bg-success text-white">Datos de envío</div>
-    <div class="card-body">
-      <input class="form-control mb-3" placeholder="Dirección" [(ngModel)]="datos.direccion">
-      <input class="form-control mb-3" placeholder="Teléfono" [(ngModel)]="datos.telefono">
-
-      <button class="btn btn-success w-100"
-        (click)="finalizarCompra()"
-        [disabled]="cargando">
-        {{ cargando ? 'Procesando...' : 'Confirmar compra' }}
-      </button>
-    </div>
+  <!-- Resumen -->
+  <div class="glass-card" *ngIf="productos.length > 0">
+    <h3 class="section-title">Resumen</h3>
+    <div class="summary-line">Subtotal <span>${{ subtotal }}</span></div>
+    <div class="summary-line">Envío <span>${{ envio }}</span></div>
+    <div class="divider"></div>
+    <div class="summary-total">Total <span>${{ total }}</span></div>
   </div>
 
-  <div *ngIf="productos.length === 0" class="alert alert-warning text-center">
+  <!-- Datos -->
+  <div class="glass-card" *ngIf="productos.length > 0">
+    <h3 class="section-title">Datos de Envío</h3>
+
+    <input class="input" placeholder="Dirección" [(ngModel)]="datos.direccion">
+    <input class="input" placeholder="Teléfono" [(ngModel)]="datos.telefono">
+
+    <button class="btn-main"
+      (click)="finalizarCompra()"
+      [disabled]="cargando">
+      {{ cargando ? "Procesando..." : "Confirmar compra" }}
+    </button>
+  </div>
+
+  <!-- Vacío -->
+  <div *ngIf="productos.length === 0" class="empty-msg">
     Tu carrito está vacío.
   </div>
 

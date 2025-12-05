@@ -1,107 +1,165 @@
-/* Contenedor principal */
-.container {
-  max-width: 800px;
+/* Fuente y base */
+* {
+  font-family: "Inter", sans-serif;
+}
+
+.checkout-wrapper {
+  max-width: 750px;
   margin: auto;
-  font-family: 'Arial', sans-serif;
+  padding: 20px;
 }
 
 /* Título */
-h2 {
-  color: #d63384; /* rosa fuerte */
+.title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #b8007c;
+  margin-bottom: 25px;
 }
 
-/* Mensajes */
-.alert-info {
-  background-color: #ffe6f0;
-  color: #d63384;
-  border: 1px solid #ffb3cc;
+/* Bubble de info */
+.info-bubble {
+  background: rgba(255, 182, 227, 0.35);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-align: center;
+  color: #a0006a;
+  margin-bottom: 20px;
 }
 
-.alert-warning {
-  background-color: #ffe6f0;
-  color: #d63384;
-  border: 1px solid #ffb3cc;
+/* Tarjetas glass */
+.glass-card {
+  background: rgba(255, 224, 245, 0.45);
+  border: 1px solid rgba(255, 182, 227, 0.4);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(255, 136, 206, 0.15);
+  margin-bottom: 25px;
 }
 
-/* Cards */
-.card {
-  border-radius: 10px;
-  border: 1px solid #ffb3cc;
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #cd008a;
+  margin-bottom: 15px;
 }
 
-/* Header de las cards */
-.card-header.bg-primary {
-  background-color: #ff66b2 !important;
+/* Productos */
+.product-card {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 14px;
+  background: rgba(255, 172, 214, 0.25);
+  border: 1px solid rgba(255, 120, 195, 0.3);
+  margin-bottom: 12px;
 }
 
-.card-header.bg-success {
-  background-color: #ff3399 !important;
+.prod-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(255, 100, 190, 0.25);
 }
 
-/* Lista de productos */
-.list-group-item {
-  background-color: #fff0f6;
-  border: none;
-  margin-bottom: 8px;
-  border-radius: 8px;
+.prod-data h4 {
+  margin: 0;
+  color: #8a0060;
 }
 
-/* Imagen del producto */
-.list-group-item img {
-  border-radius: 8px;
-  border: 1px solid #ffb3cc;
+.desc {
+  display: block;
+  margin: 3px 0;
+  color: #a73683;
 }
 
-/* Texto de productos */
-.list-group-item strong {
-  color: #d63384;
+.prod-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #7e2c6a;
 }
 
-.list-group-item .text-muted {
-  color: #b30059 !important;
+.prod-meta .sub {
+  font-weight: bold;
+  color: #c6007f;
 }
 
-.list-group-item small {
-  color: #99004d;
+/* Resumen */
+.summary-line,
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #7a2d68;
+  margin: 5px 0;
 }
 
-/* Resumen de compra */
-.card-body h4 {
-  color: #d63384;
+.summary-total {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c60081;
 }
 
-.card-body p {
-  color: #b30059;
+.divider {
+  height: 1px;
+  background: rgba(202, 0, 123, 0.3);
+  margin: 12px 0;
+  border-radius: 1px;
 }
 
 /* Inputs */
-.form-control {
-  border: 1px solid #ffb3cc;
-  border-radius: 5px;
-  background-color: #fff0f6;
-  color: #99004d;
+.input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 230, 244, 0.7);
+  border: 1px solid rgba(255, 168, 214, 0.6);
+  color: #7d2c6a;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: 0.2s;
 }
 
-.form-control:focus {
-  border-color: #ff3399;
-  box-shadow: 0 0 5px #ffb3cc;
+.input:focus {
+  border-color: #d10087;
+  background: rgba(255, 240, 248, 0.9);
+  outline: none;
 }
 
-/* Botón de confirmar compra */
-.btn-success {
-  background-color: #ff3399;
-  border-color: #ff3399;
+/* Botón */
+.btn-main {
+  background: linear-gradient(135deg, #ff4fb0, #d60089);
+  border: none;
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
   color: white;
-  font-weight: bold;
-  transition: background 0.3s;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
-.btn-success:hover {
-  background-color: #d63384;
-  border-color: #d63384;
+.btn-main:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 80, 170, 0.4);
 }
 
-/* Total */
-hr {
-  border-top: 2px solid #ffb3cc;
+.btn-main:disabled {
+  background: #ff99d6;
+  cursor: not-allowed;
 }
+
+/* Vacío */
+.empty-msg {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 205, 235, 0.45);
+  border-radius: 14px;
+  color: #a60070;
+}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

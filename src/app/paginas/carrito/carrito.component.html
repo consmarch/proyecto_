@@ -1,73 +1,57 @@
-<div class="container mt-4">
+<div class="cart-container mt-4">
 
-  <h2 class="mb-3">Carrito de compras</h2>
+  <h2 class="cart-title mb-3">Carrito de compras</h2>
 
   <div *ngIf="carrito.length > 0; else vacio">
 
-    <table class="table table-striped align-middle">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Subtotal</th>
-          <th></th>
-        </tr>
-      </thead>
+    <div class="cart-list">
+      <div class="cart-item" *ngFor="let item of carrito">
 
-      <tbody>
-        <tr *ngFor="let item of carrito">
-          
-          <!-- Imagen -->
-          <td>
-            <img *ngIf="item.imagen"
-                 [src]="'http://localhost/api_proyecto/public/uploads/' + item.imagen"
-                 class="thumb" />
-          </td>
+        <!-- Imagen -->
+        <div class="item-img">
+          <img *ngIf="item.imagen"
+               [src]="'http://localhost/api_proyecto/public/uploads/' + item.imagen"
+               alt="Producto">
+        </div>
 
-          <!-- Nombre -->
-          <td>
-            <strong>{{ item.nombre }}</strong>
-          </td>
+        <!-- Info del producto -->
+        <div class="item-info">
+          <h4 class="item-name">{{ item.nombre }}</h4>
+          <p class="item-price">Precio: $ {{ item.precio_unitario }}</p>
 
-          <!-- Precio -->
-          <td>$ {{ item.precio_unitario }}</td>
-
-          <!-- Cantidad (editable) -->
-          <td>
+          <div class="item-qty">
+            <label>Cantidad:</label>
             <input type="number"
                    min="1"
-                   class="form-control"
                    [value]="item.cantidad"
                    (change)="cambiarCantidad(item.id_detalle_carrito, $event)">
-          </td>
+          </div>
 
-          <!-- Subtotal -->
-          <td>$ {{ item.subtotal }}</td>
+          <p class="item-subtotal">Subtotal: $ {{ item.subtotal }}</p>
+        </div>
 
-          <!-- Eliminar -->
-          <td>
-            <button class="btn btn-danger btn-sm"
-                    (click)="eliminar(item.id_detalle_carrito)">
-              Eliminar
-            </button>
-          </td>
+        <!-- Botón eliminar -->
+        <div class="item-action">
+          <button class="btn-remove"
+                  (click)="eliminar(item.id_detalle_carrito)">
+            ✕
+          </button>
+        </div>
 
-        </tr>
-      </tbody>
-    </table>
+      </div>
+    </div>
 
-    <div class="text-end mt-4">
+    <!-- Totales -->
+    <div class="cart-summary text-end mt-4">
       <p>Subtotal: <strong>$ {{ total }}</strong></p>
       <p>Envío: <strong>$ {{ envio }}</strong></p>
-      <p>Total: <strong>$ {{ total + envio }}</strong></p>
+      <p class="cart-total">Total: <strong>$ {{ total + envio }}</strong></p>
 
-      <button class="btn btn-outline-danger me-2" (click)="vaciarCarrito()">
+      <button class="btn-clear" (click)="vaciarCarrito()">
         Vaciar carrito
       </button>
 
-      <button class="btn btn-primary" (click)="irACompra()">
+      <button class="btn-buy" (click)="irACompra()">
         Finalizar compra
       </button>
     </div>
@@ -75,7 +59,7 @@
   </div>
 
   <ng-template #vacio>
-    <div class="alert alert-info text-center">
+    <div class="cart-empty text-center">
       Tu carrito está vacío.
     </div>
   </ng-template>
